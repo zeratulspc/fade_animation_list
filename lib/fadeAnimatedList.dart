@@ -15,28 +15,34 @@ class _FadeAnimatedListState extends State<FadeAnimatedList> {
 
   @override
   void initState() {
-    itemPositionsListener.itemPositions.addListener(() => print(itemPositionsListener.itemPositions.value.last));
     super.initState();
   }
+
+  List<bool> widgetVisible = [
+    false,false,false,false,false,false,false,
+    false,false,false,false,false,false,false,
+    false,false,false,false,false,false,false,
+    false,false,false,false,false,false,false,
+  ];
 
   @override
   Widget build(BuildContext context) {
     return ScrollablePositionedList.builder(
-        itemCount: 300,
+        itemCount: widgetVisible.length,
         itemScrollController: itemScrollController,
         itemPositionsListener: itemPositionsListener,
         itemBuilder: (context, index) {
-          return Container(
-            color: Colors.amber,
-            padding: EdgeInsets.all(5.0),
-            margin: EdgeInsets.symmetric(vertical: 3.0),
-            child: Center(
+          return AnimatedOpacity(
+              opacity: widgetVisible[index] ? 1.0 : 0.0,
+            duration: Duration(milliseconds: 300),
+            child: Card(
               child: Container(
-                color: Colors.pink,
-                child: Text("$index"),
+                height: Random().nextInt(300)+100.toDouble(),
+                child: Center(
+                  child: Text("$index"),
+                ),
               ),
             ),
-            height: Random().nextInt(300)+100.toDouble(),
           );
         }
     );
